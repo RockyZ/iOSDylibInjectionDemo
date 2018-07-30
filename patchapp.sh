@@ -27,15 +27,15 @@ USAGE
 #
 
 function copy_library_and_load {
-	
+
 
 	# copy the files into the .app folder
 	echo '[+] Copying .dylib dependences into "'$TMPDIR/Payload/$APP'"'
-	cp -rf $DYLIB_FOLDER "$TMPDIR/Payload/$APP/Dylibs"
+	cp -rf $DYLIB_FOLDER "$TMPDIR/Payload/$APP/Frameworks"
 
 	# re-sign Frameworks, too
 	echo "APPDIR=$APPDIR"
-	for file in `ls -1 "$APPDIR"/Dylibs`; do
+	for file in `ls -1 "$APPDIR"/Frameworks`; do
 
 		if [[ "$file" == *.framework ]]
 		then
@@ -63,8 +63,8 @@ function copy_framework_and_load {
 function copy_dylib_and_load {
 	dylib=$1
 	echo -n '     '
-	echo "Install Load: $file -> @executable_path/Dylibs/$dylib"
-	$OPTOOL install -c load -p "@executable_path/Dylibs/$dylib" -t "$APPDIR/$APP_BINARY" >& /dev/null
+	echo "Install Load: $file -> @rpath/$dylib"
+	$OPTOOL install -c load -p "@rpath/$dylib" -t "$APPDIR/$APP_BINARY" >& /dev/null
 }
 
 
@@ -144,15 +144,14 @@ function ipa_patch {
 	copy_library_and_load
 
 	cd $TMPDIR
-	
+
 	repack_ipa
 
 	cd - >/dev/null 2>&1
 }
 
 
-	
-ipa_patch 	
+
+ipa_patch
 # success!
 exit 0
-
