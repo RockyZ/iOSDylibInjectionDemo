@@ -31,8 +31,7 @@ function copy_library_and_load {
 
 	# copy the files into the .app folder
 	echo '[+] Copying .dylib dependences into "'$TMPDIR/Payload/$APP'"'
-	cp -rf $DYLIB_FOLDER "$TMPDIR/Payload/$APP/Frameworks"
-
+	cp -rf $DYLIB_FOLDER/* "$TMPDIR/Payload/$APP/Frameworks"
 	# re-sign Frameworks, too
 	echo "APPDIR=$APPDIR"
 	for file in `ls -1 "$APPDIR"/Frameworks`; do
