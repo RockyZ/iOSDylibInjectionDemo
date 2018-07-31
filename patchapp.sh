@@ -34,13 +34,13 @@ function copy_library_and_load {
 	cp -rf $DYLIB_FOLDER/* "$TMPDIR/Payload/$APP/Frameworks"
 	# re-sign Frameworks, too
 	echo "APPDIR=$APPDIR"
-	for file in `ls -1 "$APPDIR"/Frameworks`; do
+	for file in `ls -1 "$DYLIB_FOLDER"`; do
 
 		if [[ "$file" == *.framework ]]
 		then
-		    copy_framework_and_load "$file"
+		    copy_framework_and_load $file
 		else
-		    copy_dylib_and_load "$file"
+		    copy_dylib_and_load $file
 		fi
 	done
 
